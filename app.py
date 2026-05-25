@@ -166,6 +166,8 @@ def assemble_data():
         species.append({
             **s,
             **meta,
+            # d['avg_density'] intentionally excluded — s['avg_density'] (2dp) is the display value.
+            # **meta['name'] overrides **s['name']; values are identical for all species.
             'high': d['high'],
             'moderate': d['moderate'],
             'low': d['low'],

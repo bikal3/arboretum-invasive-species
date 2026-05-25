@@ -2,7 +2,7 @@ import sys
 import os
 sys.path.insert(0, os.path.dirname(os.path.dirname(__file__)))
 
-from app import load_species_data, load_density_data, compute_threat_score, compute_effort_score, severity_color
+from app import load_species_data, load_density_data, compute_threat_score, compute_effort_score, severity_color, create_app
 
 
 def test_load_species_data_returns_five_rows():
@@ -69,9 +69,6 @@ def test_severity_color_half():
 
 def test_severity_color_zero_max():
     assert severity_color(0, 0) == '#ffffff'
-
-
-from app import create_app
 
 
 def test_index_returns_200():
