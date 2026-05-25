@@ -14,12 +14,12 @@ a { color: inherit; text-decoration: none; }
 /* Hero */
 .hero {
   background: linear-gradient(160deg, #1a3a1a 0%, #2d5a27 50%, #4a7c59 100%);
-  min-height: 100vh;
+  min-height: 50vh;
   display: flex;
   align-items: center;
   justify-content: center;
   text-align: center;
-  padding: 60px 24px;
+  padding: 40px 24px;
 }
 .hero-inner { max-width: 800px; }
 .hero-kicker {
