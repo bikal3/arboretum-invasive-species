@@ -8,3 +8,4 @@ arboretum_data/
 *.pdf
 *.pptx
 docs/originals/
+# analysis.ipynb is intentionally tracked in git
