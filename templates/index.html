@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+<html>
+<head><title>Mapping Invasive Plant Distribution</title></head>
+<body>
+<script>
+window.speciesData = {{ species | tojson }};
+window.statsData = {{ stats | tojson }};
+</script>
+{% for s in card_species %}{{ s.code }}{% endfor %}
+</body>
+</html>

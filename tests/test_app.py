@@ -69,3 +69,30 @@ def test_severity_color_half():
 
 def test_severity_color_zero_max():
     assert severity_color(0, 0) == '#ffffff'
+
+
+from app import create_app
+
+
+def test_index_returns_200():
+    client = create_app().test_client()
+    assert client.get('/').status_code == 200
+
+
+def test_index_contains_title():
+    client = create_app().test_client()
+    assert b'Mapping Invasive Plant Distribution' in client.get('/').data
+
+
+def test_index_contains_all_species_codes():
+    client = create_app().test_client()
+    data = client.get('/').data
+    for code in [b'OB', b'BB', b'JK', b'NM']:
+        assert code in data
+
+
+def test_index_contains_chart_data():
+    client = create_app().test_client()
+    data = client.get('/').data
+    assert b'speciesData' in data
+    assert b'statsData' in data
