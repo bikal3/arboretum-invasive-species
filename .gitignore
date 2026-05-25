@@ -7,5 +7,4 @@ arboretum_data/
 .superpowers/
 *.pdf
 *.pptx
-docs/originals/
-# analysis.ipynb is intentionally tracked in git
+docs/
