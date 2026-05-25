@@ -31,3 +31,44 @@ def test_load_density_data_ob_fields():
     assert ob['moderate'] == 5812
     assert ob['low'] == 2661
     assert ob['absent'] == 38394
+
+
+from app import compute_threat_score, compute_effort_score, severity_color
+
+
+def test_compute_threat_score_ob():
+    species_row = {'cells_present': 12890, 'avg_density': 0.537}
+    density_row = {'high': 4417}
+    score = compute_threat_score(species_row, density_row, total_cells=51284)
+    assert round(score, 1) == 18.9
+
+
+def test_compute_threat_score_ob_beats_nm():
+    ob_s = {'cells_present': 12890, 'avg_density': 0.537}
+    ob_d = {'high': 4417}
+    nm_s = {'cells_present': 1216, 'avg_density': 0.046}
+    nm_d = {'high': 227}
+    assert compute_threat_score(ob_s, ob_d, 51284) > compute_threat_score(nm_s, nm_d, 51284)
+
+
+def test_compute_effort_score():
+    species_row = {'cells_present': 12890, 'avg_density': 0.537}
+    score = compute_effort_score(species_row, difficulty=1.4)
+    assert round(score, 1) == round(12890 * 0.537 * 1.4, 1)
+
+
+def test_severity_color_max():
+    assert severity_color(100, 100) == '#c0392b'
+
+
+def test_severity_color_zero():
+    assert severity_color(0, 100) == '#ffffff'
+
+
+def test_severity_color_half():
+    # ratio=0.5: r=223(0xdf), g=156(0x9c), b=149(0x95)
+    assert severity_color(50, 100) == '#df9c95'
+
+
+def test_severity_color_zero_max():
+    assert severity_color(0, 0) == '#ffffff'
