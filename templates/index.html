@@ -1,11 +1,285 @@
 <!DOCTYPE html>
-<html>
-<head><title>Mapping Invasive Plant Distribution</title></head>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mapping Invasive Plants — Hadwen Arboretum</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+</head>
 <body>
-<script>
-window.speciesData = {{ species | tojson }};
-window.statsData = {{ stats | tojson }};
-</script>
-{% for s in card_species %}{{ s.code }}{% endfor %}
+
+  <!-- HERO -->
+  <section class="hero" id="hero">
+    <div class="hero-inner">
+      <p class="hero-kicker">Clark University &middot; Hadwen Arboretum &middot; 2024</p>
+      <h1 class="hero-title">Mapping Invasive Plant Distribution</h1>
+      <p class="hero-authors">Annan Shrestha &middot; Bikal Shrestha &middot; Nathan Clark</p>
+      <p class="hero-sponsor">Sponsor: Professor John Rogan</p>
+      <div class="hero-stats">
+        <div class="stat-card">
+          <span class="stat-number" data-target="42.6" data-suffix="%">0%</span>
+          <span class="stat-label">Invasive Coverage</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-number" data-target="51284" data-suffix="">0</span>
+          <span class="stat-label">Survey Cells (2m&times;2m)</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-number" data-target="4" data-suffix="">0</span>
+          <span class="stat-label">Invasive Species</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-number" data-target="26" data-suffix="">0</span>
+          <span class="stat-label">Acres Surveyed</span>
+        </div>
+      </div>
+      <div class="hero-scroll-hint">&#x25BC; scroll to explore</div>
+    </div>
+  </section>
+
+  <!-- STICKY NAV -->
+  <nav class="sticky-nav" id="sticky-nav">
+    <span class="nav-brand">Hadwen Invasive Map</span>
+    <div class="nav-links">
+      <a href="#problem">Problem</a>
+      <a href="#survey">Survey</a>
+      <a href="#findings">Findings</a>
+      <a href="#analysis">Analysis</a>
+      <a href="#action">Action</a>
+    </div>
+  </nav>
+
+  <!-- CH 1: THE PROBLEM -->
+  <section class="chapter" id="problem">
+    <div class="chapter-label" style="color:#c0392b;">Chapter 1</div>
+    <h2 class="chapter-title" style="border-left-color:#c0392b;">The Problem</h2>
+    <div class="two-col">
+      <div class="prose">
+        <p>The Hadwen Arboretum is a 26-acre urban forest owned by Clark University that provides
+        important habitat, teaching space, and recreation for the surrounding community. Like many
+        New England woodlands, it is increasingly impacted by invasive plants that outcompete
+        native species and alter ecosystem processes.</p>
+        <p>This project mapped the fine-scale distribution and density of these invasives using a
+        2m &times; 2m survey grid to identify hotspots and support targeted management and
+        restoration planning.</p>
+        <p>The land was originally part of Obadiah Hadwen's Magnolia Farm, bequeathed to Clark
+        University in 1907 to be preserved as an arboretum and outdoor classroom. Recent
+        student- and faculty-led efforts have sought to restore the arboretum's educational
+        mission while improving ecological health.</p>
+      </div>
+      <div class="species-list-card">
+        <h3>Invasive Species Tracked</h3>
+        <ul>
+          {% for s in card_species %}
+          <li>
+            <span class="species-dot" style="background:{{ s.color }};"></span>
+            <div>
+              <span class="species-item-name">{{ s.name }}</span>
+              <span class="species-item-latin">{{ s.latin }}</span>
+            </div>
+          </li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- CH 2: THE SURVEY -->
+  <section class="chapter chapter-alt" id="survey">
+    <div class="chapter-label" style="color:#e67e22;">Chapter 2</div>
+    <h2 class="chapter-title" style="border-left-color:#e67e22;">The Survey Method</h2>
+    <div class="survey-stats">
+      <div class="survey-stat">
+        <span class="survey-stat-value">2m &times; 2m</span>
+        <span class="survey-stat-label">Grid cell size</span>
+      </div>
+      <div class="survey-stat">
+        <span class="survey-stat-value">51,284</span>
+        <span class="survey-stat-label">Total cells surveyed</span>
+      </div>
+      <div class="survey-stat">
+        <span class="survey-stat-value">0 &ndash; 3</span>
+        <span class="survey-stat-label">Density scale</span>
+      </div>
+      <div class="survey-stat">
+        <span class="survey-stat-value">26 ac</span>
+        <span class="survey-stat-label">Full arboretum</span>
+      </div>
+    </div>
+    <div class="density-legend">
+      <h3>Density Scale</h3>
+      <div class="legend-items">
+        <div class="legend-item">
+          <span class="legend-swatch" style="background:#ffffff;border:1px solid #ccc;"></span>
+          <span>0 &mdash; Absent</span>
+        </div>
+        <div class="legend-item">
+          <span class="legend-swatch" style="background:#ffb3b3;"></span>
+          <span>1 &mdash; Low</span>
+        </div>
+        <div class="legend-item">
+          <span class="legend-swatch" style="background:#ff6666;"></span>
+          <span>2 &mdash; Moderate</span>
+        </div>
+        <div class="legend-item">
+          <span class="legend-swatch" style="background:#c0392b;"></span>
+          <span>3 &mdash; High / Dominant</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CH 3: FINDINGS -->
+  <section class="chapter" id="findings">
+    <div class="chapter-label" style="color:#4a7c59;">Chapter 3</div>
+    <h2 class="chapter-title" style="border-left-color:#4a7c59;">The Findings</h2>
+
+    <div class="charts-overview">
+      <div class="chart-wrapper">
+        <h3>Species Composition</h3>
+        <p class="chart-sub">Share of invasive area by species</p>
+        <canvas id="speciesCompositionChart"></canvas>
+      </div>
+      <div class="chart-wrapper">
+        <h3>Overall Coverage</h3>
+        <p class="chart-sub">{{ stats.invasive_pct }}% of the arboretum has invasives</p>
+        <canvas id="overallCoverageChart"></canvas>
+      </div>
+    </div>
+
+    <h3 class="section-subheading">Per-Species Breakdown</h3>
+    <div class="species-cards">
+      {% for s in card_species %}
+      <div class="species-card fade-in-up">
+        <div class="species-card-header" style="background:{{ s.color }};">
+          <div>
+            <span class="species-card-code">{{ s.code }}</span>
+            <span class="species-card-name">{{ s.name }}</span>
+          </div>
+          <span class="species-card-latin">{{ s.latin }}</span>
+        </div>
+        <div class="species-card-body">
+          <img src="{{ url_for('static', filename='images/' + s.map_image) }}"
+               alt="{{ s.name }} density map" class="species-map-img">
+          <div class="species-stats-row">
+            <div class="species-stat">
+              <span class="species-stat-val">{{ s.coverage_pct }}%</span>
+              <span class="species-stat-lbl">Coverage</span>
+            </div>
+            <div class="species-stat">
+              <span class="species-stat-val">{{ s.avg_density }}</span>
+              <span class="species-stat-lbl">Avg Density</span>
+            </div>
+            <div class="species-stat">
+              <span class="species-stat-val">{{ "{:,}".format(s.cells_present) }}</span>
+              <span class="species-stat-lbl">Cells Present</span>
+            </div>
+          </div>
+          <div class="density-bar-wrapper">
+            <canvas id="densityBar_{{ s.code }}" height="80"></canvas>
+          </div>
+          <details class="management-details">
+            <summary>Management Approach</summary>
+            <p class="management-text">{{ s.management }}</p>
+          </details>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </section>
+
+  <!-- CH 4: ANALYSIS -->
+  <section class="chapter chapter-alt" id="analysis">
+    <div class="chapter-label" style="color:#8e44ad;">Chapter 4 &middot; New Analysis</div>
+    <h2 class="chapter-title" style="border-left-color:#8e44ad;">Deeper Insights</h2>
+
+    <div class="analysis-block fade-in-up">
+      <h3>&#127919; Species Threat Index</h3>
+      <p>A composite 0&ndash;100 score combining coverage (40%), average density (40%), and
+      high-density cell count (20%). Higher score = greater ecological threat to the arboretum.</p>
+      <div class="chart-wrapper-wide">
+        <canvas id="threatIndexChart" height="120"></canvas>
+      </div>
+    </div>
+
+    <div class="analysis-block fade-in-up">
+      <h3>&#127777;&#65039; Severity Heatmap</h3>
+      <p>Color intensity scales from white (low) to dark red (high) within each column.</p>
+      <div class="table-scroll">
+        <table class="heatmap-table">
+          <thead>
+            <tr>
+              <th>Species</th>
+              <th>Coverage %</th>
+              <th>Avg Density</th>
+              <th>High-Density Cells</th>
+              <th>Moderate Cells</th>
+              <th>Low Cells</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for s in species %}
+            <tr>
+              <td class="species-name-cell">
+                <span class="dot" style="background:{{ s.color }};"></span>{{ s.name }}
+              </td>
+              <td style="background:{{ s.sev_color_coverage }};">{{ s.coverage_pct }}%</td>
+              <td style="background:{{ s.sev_color_avg_density }};">{{ s.avg_density }}</td>
+              <td style="background:{{ s.sev_color_high }};">{{ "{:,}".format(s.high) }}</td>
+              <td style="background:{{ s.sev_color_moderate }};">{{ "{:,}".format(s.moderate) }}</td>
+              <td style="background:{{ s.sev_color_low }};">{{ "{:,}".format(s.low) }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="analysis-block fade-in-up">
+      <h3>&#9874;&#65039; Management Effort Estimator</h3>
+      <p>Relative removal effort: cells present &times; average density &times; difficulty
+      multiplier (JK=1.5 rhizome system, OB=1.4 vine regrowth, BB=1.0, NM=0.9, Other=0.8).
+      Normalized to the highest-effort species.</p>
+      <div class="chart-wrapper-wide">
+        <canvas id="effortChart" height="120"></canvas>
+      </div>
+    </div>
+  </section>
+
+  <!-- CH 5: ACTION -->
+  <section class="chapter chapter-dark" id="action">
+    <div class="chapter-label" style="color:#a8d5a2;">Chapter 5</div>
+    <h2 class="chapter-title" style="border-left-color:#a8d5a2; color:white;">
+      Recommendations &amp; Action
+    </h2>
+    <p class="chapter-body-text" style="color:#d4edda;">
+      Focus management on high-density patches of oriental bittersweet, burning bush, knotweed,
+      and Norway maple, especially along edges, trails, and disturbed areas.
+    </p>
+    <ul class="action-list">
+      <li>&#127919; Focus on high-density patches near trails and edges first</li>
+      <li>&#9874;&#65039; Use mechanical removal (hand-pull after rain) for burning bush and small Norway maple</li>
+      <li>&#128167; Apply herbicide (triclopyr / glyphosate) for dense oriental bittersweet and knotweed stands</li>
+      <li>&#127807; Pair removal with native tree and understory planting to suppress regrowth</li>
+      <li>&#128269; Continue 2m &times; 2m grid monitoring to track treatment success and detect new invasions</li>
+    </ul>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <p>Annan Shrestha &middot; Bikal Shrestha &middot; Nathan Clark &middot; Clark University 2024</p>
+    <p>Sponsor: Professor John Rogan</p>
+    <p class="attribution">Map data: Esri, Vantor, Airbus DS, USGS, NGA, NASA, CGIAR,
+    N Robinson, NCEAS, NLS, OS, NMA, Geodatastyrelsen, Rijkswaterstaat, GSA, Geoland,
+    FEMA, Intermap, and the GIS user community</p>
+  </footer>
+
+  <script>
+    window.speciesData = {{ species | tojson }};
+    window.cardSpeciesData = {{ card_species | tojson }};
+    window.statsData = {{ stats | tojson }};
+  </script>
+  <script src="{{ url_for('static', filename='js/charts.js') }}"></script>
 </body>
 </html>
