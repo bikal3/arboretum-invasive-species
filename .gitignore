@@ -2,13 +2,7 @@
 __pycache__/
 *.pyc
 .DS_Store
-*.pdf
-*.pptx
-analysis.ipynb
-a.py
 arboretum_data/
 .claude/
 .superpowers/
-invasive_analysis.png
-invasive_coverage_pie.png
-species_coverage_pie.png
+docs/originals/
