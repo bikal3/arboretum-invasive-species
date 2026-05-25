@@ -2,7 +2,7 @@ import sys
 import os
 sys.path.insert(0, os.path.dirname(os.path.dirname(__file__)))
 
-from app import load_species_data, load_density_data
+from app import load_species_data, load_density_data, compute_threat_score, compute_effort_score, severity_color
 
 
 def test_load_species_data_returns_five_rows():
@@ -33,9 +33,6 @@ def test_load_density_data_ob_fields():
     assert ob['absent'] == 38394
 
 
-from app import compute_threat_score, compute_effort_score, severity_color
-
-
 def test_compute_threat_score_ob():
     species_row = {'cells_present': 12890, 'avg_density': 0.537}
     density_row = {'high': 4417}
@@ -54,7 +51,7 @@ def test_compute_threat_score_ob_beats_nm():
 def test_compute_effort_score():
     species_row = {'cells_present': 12890, 'avg_density': 0.537}
     score = compute_effort_score(species_row, difficulty=1.4)
-    assert round(score, 1) == round(12890 * 0.537 * 1.4, 1)
+    assert round(score, 1) == 9690.7
 
 
 def test_severity_color_max():
